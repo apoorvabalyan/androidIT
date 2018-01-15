@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Android_IT</string>
+    <string name="signInEmail">Enter your Email address</string>
+    <string name="signInPass">Enter Password</string>
+    <string name="signInButton">Sign In</string>
+    <string name="signInGoogle">Sign In via Google</string>
+    <string name="logInButton">Log In</string>
+</resources>
