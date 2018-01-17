@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Home.class));
             finish();
         }
-        mMarker =(ImageView)findViewById(R.id.marker);
+        mMarker =findViewById(R.id.marker);
         AnimatorSet a = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.marker_animation);
         a.setTarget(mMarker);
         AnimatorSet c = new AnimatorSet();

@@ -8,12 +8,13 @@ public class TeacherClass extends UserClass {
     //Variables to set the information about the Teacher
     String qualifications;
     String experience;
+    boolean flag;
     String contactNumber;
     public TeacherClass()
     {}
-    public TeacherClass(boolean option,String name,String q,String exp,String contact)
+    public TeacherClass(String q,String exp,String contact,boolean f)
     {
-        super(option, name);
+        this.flag = f;
         this.qualifications = q;
         this.experience = exp;
         this.contactNumber = contact;

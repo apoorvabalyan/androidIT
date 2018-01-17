@@ -12,23 +12,26 @@
         android:layout_height="0dp"
         android:layout_weight="0.65"
         android:orientation="vertical">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:src="@drawable/profile"
             android:alpha="0.5"
-            android:scaleY="0.8"
+            android:gravity="center"
             android:scaleX="0.8"
-            android:gravity="center"/>
+            android:scaleY="0.8"
+            android:src="@drawable/profile" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"
-            android:text="XYZ"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:text="XYZ"
+            android:textSize="20sp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,6 +42,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -50,19 +54,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
+                android:gravity="center"
                 android:text="CONTACT NUMBER"
-                android:gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-            <EditText
-                android:id="@+id/contact"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="Enter your contact number"
-                android:gravity="center"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/contact"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="N/A" />
+
+                <ImageView
+                    android:clickable="true"
+                    android:id="@+id/editContact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".09"
+                    android:src="@drawable/edit" />
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -74,19 +93,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
+                android:gravity="center"
                 android:text="Class"
-                android:gravity="center"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-            <EditText
-                android:id="@+id/standard"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="Enter your Class"
-                android:gravity="center"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/standard"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="N/A" />
+
+                <ImageView
+                    android:id="@+id/editClass"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".09"
+                    android:clickable="true"
+                    android:src="@drawable/edit" />
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -94,33 +128,40 @@
             android:orientation="vertical">
 
             <TextView
-
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.7"
-                android:text="Achievements"
                 android:gravity="center"
+                android:text="Achievements"
                 android:textSize="18sp"
                 android:textStyle="bold" />
-            <EditText
-                android:id="@+id/acheievements"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:hint="Enter your Achievements,if any."
-                android:gravity="center"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/acheievements"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="N/A"/>
+
+                <ImageView
+                    android:id="@+id/editAch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".09"
+                    android:clickable="true"
+                    android:src="@drawable/edit" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="Save"
-        android:id="@+id/saveBtn"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.15"/>
+        android:layout_weight="0.15" />
 </LinearLayout>

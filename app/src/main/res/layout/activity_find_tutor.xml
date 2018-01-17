@@ -4,6 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.apoorva.android_it.Find_tutor">
+    tools:context="com.example.apoorva.android_it.Find_tutor"
+    android:orientation="vertical">
 
+    <CheckBox
+        android:id="@+id/cad"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Search via Subject" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter the subject"
+        android:visibility="gone"/>
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search via Distance"/>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter the distance"
+        android:visibility="gone"/>
 </LinearLayout>

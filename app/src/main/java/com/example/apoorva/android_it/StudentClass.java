@@ -7,13 +7,14 @@ package com.example.apoorva.android_it;
 public class StudentClass extends UserClass{
     String standard;
     String achievements;
+    boolean flag;
     public StudentClass()
     {}
-    public StudentClass(boolean option,String name,String std,String ach)
+    public StudentClass(String std,String ach,boolean f)
     {
-        super(option, name);
         this.standard = std;
         this.achievements = ach;
+        this.flag = f;
     }
     //Getter and setter methods of teacher class
     public void setStandard(String standard)

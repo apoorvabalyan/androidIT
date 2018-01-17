@@ -26,48 +26,39 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class Sign_in extends AppCompatActivity {
-    static final int RC_SIGN_IN = 1;
+    String TAG = "Sign_in_activity";
     protected SignInButton mSignInButton;
     protected Button mSignN;
     protected EditText mEmail;
     protected EditText mPassword;
-    protected GoogleApiClient mGoogleApiClient;
-    protected FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        //mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
         mSignN = (Button) findViewById(R.id.sign_in);
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
+        //Database intialization
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         //Email-Password Sign in
         mSignN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "Sign_in_listener");
+                if (!validateForm()) {
+                    return;
+                }
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
-                if(TextUtils.isEmpty(email))
-                {
-                    Toast.makeText(Sign_in.this,"Enter Email Address",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password))
-                {
-                    Toast.makeText(Sign_in.this,"Enter Password",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                if(password.length()<6)
-                {
-                    Toast.makeText(Sign_in.this,"Password too short.Enter mininum 6 characters.",Toast.LENGTH_LONG).show();
-                    return;
-                }
-                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(Sign_in.this, new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(Sign_in.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -77,91 +68,68 @@ public class Sign_in extends AppCompatActivity {
                             Toast.makeText(Sign_in.this, "Authentication failed." + task.getException(),
                                     Toast.LENGTH_SHORT).show();
                         } else {
-                            startActivity(new Intent(Sign_in.this, Home.class));
-                            finish();
+                            //This returns the current user that has created the account
+                            onAuthSuccess(task.getResult().getUser());
                         }
                     }
                 });
             }
         });
-        // Configure Google Sign In
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build();
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-//                    @Override
-//                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//
-//                    }
-//                } /* OnConnectionFailedListener */)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
-//        mSignInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                signIn();
-//            }
-//
-//        });
     }
-//    private void signIn() {
-//        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-//        startActivityForResult(signInIntent, RC_SIGN_IN);
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-//        if (requestCode == RC_SIGN_IN) {
-//            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-//            if (result.isSuccess()) {
-//                // Google Sign In was successful, authenticate with Firebase
-//                GoogleSignInAccount account = result.getSignInAccount();
-//                firebaseAuthWithGoogle(account);
-//            } else {
-//                // Google Sign In failed, update UI appropriately
-//                Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-//
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-//
-//                        if (task.isSuccessful()) {
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//                        }
-//                        else
-//                        {
-//                            Toast.makeText(Sign_in.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//    }
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        //if the user is already signed in
-//        //we will close this activity
-//        //and take the user to profile activity
-//        if (mAuth.getCurrentUser() != null) {
-//            finish();
-//            startActivity(new Intent(this, Home.class));
-//        }
-//    }
-
+    //Validates the data entered by the user
+    private boolean validateForm()
+    {
+        boolean result = true;
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Required");
+            result = false;
+        }
+        else
+        {
+            mEmail.setError(null);
+        }
+        if (TextUtils.isEmpty(password)) {
+            mPassword.setError("Required");
+            result = false;
+        }
+        else
+        {
+            mPassword.setError(null);
+        }
+        if (password.length() < 6) {
+            mPassword.setError("Minimum 6 Characters!!");
+            result = false;
+        }
+        else
+        {
+            mPassword.setError(null);
+        }
+        return result;
+    }
+    //If the user account is created,we need to save the data in the database and then goes to user home
+    private void onAuthSuccess(FirebaseUser user)
+    {
+        //Returns the name of the user from the email address
+        String userName = getUserName(user.getEmail());
+        //Write the user to the database
+        writeNewUser(user.getUid(),userName,user.getEmail());
+        startActivity(new Intent(Sign_in.this, Home.class));
+        finish();
+    }
+    private String getUserName(String email)
+    {
+        if(email.contains("@"))
+        {
+            return (email.split("@")[0]);
+        }
+        else
+            return email;
+    }
+    private void writeNewUser(String userId,String name,String email)
+    {
+        UserClass user = new UserClass(name,email);
+        mDatabase.child("users").child(userId).setValue(user);
+    }
 }

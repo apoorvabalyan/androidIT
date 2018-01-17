@@ -2,6 +2,7 @@
     <string name="app_name">Android_IT</string>
     <string name="signInEmail">Enter your Email address</string>
     <string name="signInPass">Enter Password</string>
+    <string name="my_key">AIzaSyDhv1M9Rqjfj10IiQPEyw_j7k3Rz3XOJBw</string>
     <string name="signInButton">Sign In</string>
     <string name="signInGoogle">Sign In via Google</string>
     <string name="logInButton">Log In</string>

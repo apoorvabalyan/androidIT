@@ -6,15 +6,15 @@ package com.example.apoorva.android_it;
 
 public class UserClass {
     //Variables to maintain information about the user
-    protected boolean studentOrTeacher;
     protected String name;
-
+    protected String email;
     public UserClass(){
     }
-    public UserClass(boolean option, String name)
+    public UserClass( String name,String email)
     {
-        this.studentOrTeacher = option;
+        this.email = email;
         this.name = name;
+
     }
     //Getter and setter methods to access the variables value
     public void setName(String name)
@@ -25,13 +25,4 @@ public class UserClass {
     {
         return this.name;
     }
-    public void setOption(boolean option)
-    {
-        this.studentOrTeacher = option;
-    }
-    public boolean getOption()
-    {
-        return this.studentOrTeacher;
-    }
-
 }
