@@ -35,6 +35,31 @@
             android:inputType="textPassword"
             android:hint="@string/signInPass"
             android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Choose that applies:"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/cb1"
+                android:text="Teacher"
+                android:textSize="18sp"/>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/cb2"
+                android:text="Student"
+                android:textSize="18sp"/>
+        </LinearLayout>
         <Button
             android:id="@+id/sign_in"
             android:layout_width="match_parent"

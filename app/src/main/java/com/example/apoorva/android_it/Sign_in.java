@@ -8,15 +8,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInApi;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +28,10 @@ public class Sign_in extends AppCompatActivity {
     String TAG = "Sign_in_activity";
     protected SignInButton mSignInButton;
     protected Button mSignN;
+    protected CheckBox cb1;
+    protected CheckBox cb2;
+    protected boolean t;
+    protected boolean s;
     protected EditText mEmail;
     protected EditText mPassword;
     private FirebaseAuth mAuth;
@@ -45,8 +44,10 @@ public class Sign_in extends AppCompatActivity {
         mSignN = (Button) findViewById(R.id.sign_in);
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
+        cb1 = findViewById(R.id.cb1);
+        cb2 = findViewById(R.id.cb2);
         //Database intialization
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mAuth = FirebaseAuth.getInstance();
         //Email-Password Sign in
         mSignN.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +83,8 @@ public class Sign_in extends AppCompatActivity {
         boolean result = true;
         String email = mEmail.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
+         t = cb1.isChecked();
+         s = cb2.isChecked();
         if (TextUtils.isEmpty(email)) {
             mEmail.setError("Required");
             result = false;
@@ -106,6 +109,14 @@ public class Sign_in extends AppCompatActivity {
         {
             mPassword.setError(null);
         }
+        if(t == true && s == true){
+            Toast.makeText(Sign_in.this,"Choose only one option",Toast.LENGTH_SHORT).show();
+            result = false;
+        }
+        if(t == false && s == false){
+            Toast.makeText(Sign_in.this,"Choose atleaat one option",Toast.LENGTH_SHORT).show();
+            result = false;
+        }
         return result;
     }
     //If the user account is created,we need to save the data in the database and then goes to user home
@@ -129,7 +140,14 @@ public class Sign_in extends AppCompatActivity {
     }
     private void writeNewUser(String userId,String name,String email)
     {
-        UserClass user = new UserClass(name,email);
-        mDatabase.child("users").child(userId).setValue(user);
+        if(s == true) {
+            StudentClass user = new StudentClass(name, email);
+            mDatabase.child("students").child(userId).setValue(user);
+        }
+        else if(t == true)
+        {
+            TeacherClass user = new TeacherClass(name,email);
+            mDatabase.child("teachers").child(userId).setValue(user);
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Home extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener,
         GoogleApiClient.ConnectionCallbacks, LocationListener {
@@ -47,13 +53,15 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
     protected Button findBtn;
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-    private boolean flag = false;
+    DatabaseReference mDatabase;
     protected SupportMapFragment mapFrag;
     protected Location mLocation;
     protected Marker mCurrLocationMarker;
     protected LocationRequest mLocationRequest;
     double mLatitude;
     double mLongitude;
+    boolean flag;
+    String mId;
     protected GoogleMap mGoogleMap;
     protected GoogleApiClient mGoogleApiClient;
     String strEdit;
@@ -64,16 +72,29 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
         setContentView(R.layout.activity_home);
         mapFrag = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
-        //Only opens when the flag is false
-        if(flag == false) {
-            open();
-            flag = true;
-        }
         mAuth = FirebaseAuth.getInstance();
-        profileBtn = (Button)findViewById(R.id.my_profile);
+        final FirebaseUser user = mAuth.getCurrentUser();
+        profileBtn = findViewById(R.id.my_profile);
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                 mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                Log.d("user id:",mId);
+                mDatabase = FirebaseDatabase.getInstance().getReference("users").child("teachers").child(mId);
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            startActivity(new Intent(Home.this, Teacher_profile.class));
+                        }else{
+                            startActivity(new Intent(Home.this,Student_profile.class));
+                    }}
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
         });
         findBtn = (Button)findViewById(R.id.find);
@@ -81,15 +102,16 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
             @Override
             public void onClick(View view) {
                 //On clicking find tutor,we open a dialog box that asks what we want to search via
-                openFind();
+                //openFind();
+                startActivity(new Intent(Home.this,Find_tutor.class));
             }
         });
         signout = (Button) findViewById(R.id.home_btn);
-        final FirebaseUser mAuthUser = FirebaseAuth.getInstance().getCurrentUser();
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user == null) {
                     // user auth state is changed - user is null
                     // launch login activity
@@ -109,43 +131,50 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
     {
         final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("Find the tutor");
-        LinearLayout checkBoxContainer = new LinearLayout(this);
-        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        checkBoxContainer.setLayoutParams(param);
-        checkBoxContainer.setOrientation(LinearLayout.VERTICAL);
-        CheckBox chkS = new CheckBox(this);
-        chkS.setText("Search via Subject");
-        CheckBox chkD = new CheckBox(this);
-        chkD.setText("Search via Distance");
-        EditText edit = new EditText(this);
-        edit.setHint("Enter the name of the subject");
-        EditText edit1 = new EditText(this);
-        edit1.setHint("Enter the Distance");
-        checkBoxContainer.addView(chkS);
-        checkBoxContainer.addView(chkD);
-        alertBuilder.setView(checkBoxContainer);
-        if(chkS.isChecked())
-        {
-            edit.setVisibility(View.VISIBLE);
-            strEdit = edit.getText().toString();
-        }
-        else
-        {
-            edit.setVisibility(View.GONE);
-        }
-        if(chkD.isChecked())
-        {
-            checkBoxContainer.addView(edit1);
-            edit1.setVisibility(View.VISIBLE);
-            strEdit1 = edit1.getText().toString();
-        }
-        else
-        {
-            edit1.setVisibility(View.GONE);
-        }
+//        LinearLayout checkBoxContainer = new LinearLayout(this);
+//        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.WRAP_CONTENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//        );
+//        checkBoxContainer.setLayoutParams(param);
+//        checkBoxContainer.setOrientation(LinearLayout.VERTICAL);
+//        CheckBox chkS = new CheckBox(this);
+//        chkS.setText("Search via Subject");
+//        CheckBox chkD = new CheckBox(this);
+//        chkD.setText("Search via Distance");
+//        EditText edit = new EditText(this);
+//        edit.setHint("Enter the name of the subject");
+//        EditText edit1 = new EditText(this);
+//        edit1.setHint("Enter the Distance");
+//        checkBoxContainer.addView(chkS);
+//        checkBoxContainer.addView(chkD);
+//        alertBuilder.setView(checkBoxContainer);
+//        if(chkS.isChecked())
+//        {
+//            edit.setVisibility(View.VISIBLE);
+//            strEdit = edit.getText().toString();
+//        }
+//        else
+//        {
+//            edit.setVisibility(View.GONE);
+//        }
+//        if(chkD.isChecked())
+//        {
+//            checkBoxContainer.addView(edit1);
+//            edit1.setVisibility(View.VISIBLE);
+//            strEdit1 = edit1.getText().toString();
+//        }
+//        else
+//        {
+//            edit1.setVisibility(View.GONE);
+//        }
+        EditText e = new EditText(this);
+        e.setHint("Enter the subject");
+        alertBuilder.setView(e);
+        EditText e1 = new EditText(this);
+        e.setHint("Enter the Distance");
+        alertBuilder.setView(e1);
+
         alertBuilder.setPositiveButton("Search", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -165,34 +194,34 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
     public void open()
     {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setMessage("Let us customize the app for you.\nAre you a Teacher?");
+        alertBuilder.setMessage("Let us customize the app for you.\nPlease Fill the necessary details");
         alertBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 startActivity(new Intent(Home.this,Teacher_profile.class));
             }
         });
-        alertBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertBuilder.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                startActivity(new Intent(Home.this,Student_profile.class));
+               dialogInterface.cancel();
             }
         });
         AlertDialog alert = alertBuilder.create();
         alert.show();
     }
-
     //sign out method
     public void signOut() {
-        mAuth.signOut();
-    }
 
+        mAuth.signOut();
+        Log.d("Sign out","signing out");
+        startActivity(new Intent(Home.this,MainActivity.class));
+    }
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-
     @Override
     public void onStop() {
         super.onStop();
@@ -238,6 +267,26 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
         //Place current location marker
         mLatitude = location.getLatitude();
         mLongitude = location.getLongitude();
+        mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.d("user id:",mId);
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child("teachers").child(mId);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    mDatabase.child("longitude").setValue(mLongitude);
+                    mDatabase.child("latitiude").setValue(mLatitude);
+                } else {
+                    mDatabase = FirebaseDatabase.getInstance().getReference("users").child("students").child(mId);
+                    mDatabase.child("longitude").setValue(mLongitude);
+                    mDatabase.child("latitiude").setValue(mLatitude);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);

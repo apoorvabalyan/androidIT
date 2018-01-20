@@ -17,13 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:alpha="0.5"
-            android:gravity="center"
+            android:alpha="0.6"
+            android:layout_gravity="center"
             android:scaleX="0.8"
             android:scaleY="0.8"
-            android:src="@drawable/profile" />
+            android:src="@drawable/pro" />
 
         <TextView
+            android:id="@+id/student_name"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.4"
@@ -56,7 +57,7 @@
                 android:layout_weight="0.7"
                 android:gravity="center"
                 android:text="CONTACT NUMBER"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -68,8 +69,10 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:textSize="18sp"
                     android:background="@android:color/transparent"
                     android:gravity="center"
+                    android:textStyle="bold"
                     android:text="N/A" />
 
                 <ImageView
@@ -95,7 +98,7 @@
                 android:layout_weight="0.7"
                 android:gravity="center"
                 android:text="Class"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -105,6 +108,8 @@
                 <TextView
                     android:id="@+id/standard"
                     android:layout_width="0dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
@@ -133,7 +138,7 @@
                 android:layout_weight="0.7"
                 android:gravity="center"
                 android:text="Achievements"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -143,6 +148,8 @@
                 <TextView
                     android:id="@+id/acheievements"
                     android:layout_width="0dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@android:color/transparent"

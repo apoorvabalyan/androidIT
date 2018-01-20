@@ -8,23 +8,26 @@
     android:orientation="vertical">
 
     <CheckBox
-        android:id="@+id/cad"
+        android:id="@+id/checkbox1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="Search via Subject" />
     <EditText
+        android:id="@+id/edit1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Enter the subject"
-        android:visibility="gone"/>
+        />
     <CheckBox
-        android:id="@+id/checkbox"
+        android:id="@+id/checkbox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Search via Distance"/>
     <EditText
+        android:id="@+id/edit2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Enter the distance"
-        android:visibility="gone"/>
+        android:inputType="number"
+       />
 </LinearLayout>

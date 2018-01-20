@@ -6,23 +6,31 @@ package com.example.apoorva.android_it;
 
 public class UserClass {
     //Variables to maintain information about the user
-    protected String name;
-    protected String email;
+    private String id;
+    private String name;
+    private String email;
     public UserClass(){
     }
-    public UserClass( String name,String email)
+    public UserClass( String id,String name,String email)
     {
+        this.id = id;
         this.email = email;
         this.name = name;
-
     }
-    //Getter and setter methods to access the variables value
-    public void setName(String name)
+    public void setName(String a)
     {
-        this.name = name;
+        this.name  = a;
+    }
+    public void setEmail(String a)
+    {
+        this.email = a;
     }
     public String getName()
     {
-        return this.name;
+        return name;
+    }
+    public String getId()
+    {
+        return id;
     }
 }

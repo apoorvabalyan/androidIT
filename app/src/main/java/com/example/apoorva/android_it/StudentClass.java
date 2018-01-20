@@ -5,18 +5,22 @@ package com.example.apoorva.android_it;
  */
 
 public class StudentClass extends UserClass{
-    String standard;
-    String achievements;
-    boolean flag;
+    private String standard;
+    private String achievements;
+    String name;
+    String email;
+    Double studentLang;
+    Double studentLat;
     public StudentClass()
     {}
-    public StudentClass(String std,String ach,boolean f)
+    public StudentClass(String name,String email)
     {
-        this.standard = std;
-        this.achievements = ach;
-        this.flag = f;
+        this.name = name;
+        this.email = email;
     }
     //Getter and setter methods of teacher class
+    public String getName(){return name;}
+    public String getEmail(){return email;}
     public void setStandard(String standard)
     {
         this.standard = standard;

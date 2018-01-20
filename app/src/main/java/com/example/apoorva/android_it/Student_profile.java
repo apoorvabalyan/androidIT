@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,14 +16,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 public class Student_profile extends AppCompatActivity {
     private boolean flag = false;
     private static  final String REQUIRED = "Required";
+    protected  TextView mStudentName;
+    protected String mId;
     protected TextView mContact;
     protected TextView mClass;
     protected TextView mAchievements;
@@ -30,45 +37,52 @@ public class Student_profile extends AppCompatActivity {
     protected ImageView mEditClass;
     protected ImageView mEditAch;
     private DatabaseReference mDatabase;
-    private String text = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
         //Database intialization
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        if(!flag)
-            open();
-        mClass = (TextView)findViewById(R.id.standard);
-        mContact = (TextView) findViewById(R.id.contact);
-        mAchievements = (TextView) findViewById(R.id.acheievements);
-        mEditAch = (ImageView)findViewById( R.id.editAch);
-        mEditClass = (ImageView)findViewById(R.id.editClass);
-        mEditContact = (ImageView)findViewById(R.id.editContact);
+        mStudentName = findViewById(R.id.student_name);
+        //Shows the name of the user
+        mId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child("students").child(mId);
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.child("name").getValue(String.class);
+                mStudentName.setText(name);
+            }
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        //To write the data about the user in the profile
+        mClass = findViewById(R.id.standard);
+        mContact = findViewById(R.id.contact);
+        mAchievements =  findViewById(R.id.acheievements);
+        mEditAch = findViewById( R.id.editAch);
+        mEditClass = findViewById(R.id.editClass);
+        mEditContact = findViewById(R.id.editContact);
         mEditContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editData();
-                mContact.setText(text);
+                editData(R.id.contact,mContact);
             }
         });
         mEditClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editData();
-                mClass.setText(text);
+                editData(R.id.standard,mClass);
             }
         });
         mEditAch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editData();
-                mAchievements.setText(text);
+                editData(R.id.acheievements,mAchievements);
             }
         });
     }
     //Opens the Dialog to enter the new data
-    private void editData()
+    private void editData(final int id,final TextView v)
     {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Enter the data:\n");
@@ -78,7 +92,8 @@ public class Student_profile extends AppCompatActivity {
         alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                text = (input.getText().toString());
+                String text = (input.getText().toString());
+                submitAndSave(text,id,v);
             }
         });
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -90,25 +105,10 @@ public class Student_profile extends AppCompatActivity {
         AlertDialog a = alert.create();
         a.show();
     }
-    //Pop up  that shows when user enter for the first time
-    public void open()
-    {
-        flag = true;
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setMessage("Please fill all the details.");
-        AlertDialog alert = alertBuilder.create();
-        alert.show();
-    }
     //Function that writes the data in the database
-    private void submitAndSave()
+    private void submitAndSave(String text,int id,TextView v)
     {
-        String std = mClass.getText().toString();
-        String contact = mContact.getText().toString();
-        String achieve = mAchievements.getText().toString();
-        if(TextUtils.isEmpty(std)){
-            mClass.setError(REQUIRED);
-        }
         Toast.makeText(this,"Saving..",Toast.LENGTH_SHORT).show();
-
+        v.setText(text);
     }
 }
