@@ -1,8 +1,6 @@
 package com.example.apoorva.android_it;
 
-import android.*;
-import android.app.Dialog;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;

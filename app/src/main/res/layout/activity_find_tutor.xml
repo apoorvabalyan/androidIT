@@ -4,30 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.apoorva.android_it.Find_tutor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.apoorva.android_it.Find_tutor">
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_margin="35dp"
+        android:background="@drawable/customborder">
     <CheckBox
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
         android:id="@+id/checkbox1"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Search via Subject" />
-    <EditText
-        android:id="@+id/edit1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Enter the subject"
-        />
+        android:text="Search via Subject" />
+
+    <EditText
+        android:textSize="20sp"
+        android:layout_gravity="center"
+        android:id="@+id/edit1Edit"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Enter the subject" />
+
     <CheckBox
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:layout_gravity="center"
         android:id="@+id/checkbox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search via Distance"/>
+        android:text="Search via Distance" />
+
     <EditText
+        android:textSize="20sp"
+        android:layout_gravity="center"
         android:id="@+id/edit2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Enter the distance"
-        android:inputType="number"
-       />
+        android:inputType="number" />
+        <CheckBox
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:id="@+id/checkbox3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search via Ratings" />
+
+        <EditText
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:id="@+id/edit3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Enter the minimum ratings"
+            android:inputType="number" />
+
+        <Button
+        android:id="@+id/searchBtn"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Search" />
+    </LinearLayout>
 </LinearLayout>
