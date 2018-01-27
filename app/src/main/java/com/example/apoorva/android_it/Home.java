@@ -237,6 +237,8 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
             }
+            else
+                checkLocationPermission();
         } else {
             buildGoogleApiClient();
             mGoogleMap.setMyLocationEnabled(true);
@@ -313,9 +315,18 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                 //Prompt the user once explanation has been shown
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
+                new AlertDialog.Builder(this)
+                        .setTitle("Title ")
+                        .setMessage("Location")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(Home.this,new String[]{
+                                        android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_LOCATION);
+                        }
+                        }).create().show();
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -338,9 +349,8 @@ public class Home extends AppCompatActivity implements OnMapReadyCallback, Googl
                     if (ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                        if (mGoogleApiClient == null) {
+
                             buildGoogleApiClient();
-                        }
                         mGoogleMap.setMyLocationEnabled(true);
                     }
                 } else {
